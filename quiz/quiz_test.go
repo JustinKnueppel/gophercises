@@ -25,7 +25,7 @@ func TestReadInput(t *testing.T) {
 		},
 		"one_line": {
 			reader: bytes.NewReader([]byte("1+1,2")),
-			want:   []quiz.Question{{Question: "1+1", Answer: "2"}},
+			want:   []quiz.Question{{Prompt: "1+1", Answer: "2"}},
 			err:    nil,
 		},
 		"one_line_too_many_fields": {
@@ -40,7 +40,7 @@ func TestReadInput(t *testing.T) {
 		},
 		"multiple_valid_lines": {
 			reader: bytes.NewReader([]byte("1+1,2\n2+2,4")),
-			want:   []quiz.Question{{Question: "1+1", Answer: "2"}, {Question: "2+2", Answer: "4"}},
+			want:   []quiz.Question{{Prompt: "1+1", Answer: "2"}, {Prompt: "2+2", Answer: "4"}},
 			err:    nil,
 		},
 	}
@@ -77,10 +77,10 @@ func TestAskQuestion(t *testing.T) {
 		question quiz.Question
 	}{
 		"empty_question": {
-			question: quiz.Question{Question: "", Answer: "2"},
+			question: quiz.Question{Prompt: "", Answer: "2"},
 		},
 		"normal_question": {
-			question: quiz.Question{Question: "1+1", Answer: "2"},
+			question: quiz.Question{Prompt: "1+1", Answer: "2"},
 		},
 	}
 
@@ -91,7 +91,7 @@ func TestAskQuestion(t *testing.T) {
 
 			got := writer.String()
 
-			if !strings.Contains(got, tc.question.Question) {
+			if !strings.Contains(got, tc.question.Prompt) {
 				t.Fatalf("Question not asked: %v", got)
 			}
 		})
@@ -138,17 +138,17 @@ func TestCorrectAnswer(t *testing.T) {
 	}{
 		"no_response": {
 			response: "",
-			question: quiz.Question{Question: "1+2", Answer: "2"},
+			question: quiz.Question{Prompt: "1+2", Answer: "2"},
 			want:     false,
 		},
 		"incorrect_response": {
 			response: "3",
-			question: quiz.Question{Question: "1+2", Answer: "2"},
+			question: quiz.Question{Prompt: "1+2", Answer: "2"},
 			want:     false,
 		},
 		"correct_response": {
 			response: "2",
-			question: quiz.Question{Question: "1+2", Answer: "2"},
+			question: quiz.Question{Prompt: "1+2", Answer: "2"},
 			want:     true,
 		},
 	}

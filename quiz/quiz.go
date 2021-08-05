@@ -10,8 +10,8 @@ import (
 
 // Question holds the prompt and answer for a given question
 type Question struct {
-	Question string
-	Answer   string
+	Prompt string
+	Answer string
 }
 
 // MarshQuestionError is used when a given input cannot be marshalled into a Question
@@ -38,8 +38,8 @@ func ReadInput(reader io.Reader) ([]Question, error) {
 		}
 
 		question := Question{
-			Question: line[0],
-			Answer:   line[1],
+			Prompt: line[0],
+			Answer: line[1],
 		}
 
 		questions = append(questions, question)
@@ -50,7 +50,7 @@ func ReadInput(reader io.Reader) ([]Question, error) {
 
 // AskQuestion prompts the user to answer the given question
 func AskQuestion(writer io.Writer, question Question) {
-	writer.Write([]byte(question.Question + "\n"))
+	writer.Write([]byte(question.Prompt + "\n"))
 }
 
 // GetResponse receives input from the user
