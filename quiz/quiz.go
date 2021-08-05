@@ -25,7 +25,7 @@ func ReadInput(reader io.Reader) ([]Question, error) {
 		return []Question{}, nil
 	}
 
-	if len(records) > 2 {
+	if len(records) != 2 {
 		return []Question{}, &MarshalQuestionError{Line: records}
 	}
 

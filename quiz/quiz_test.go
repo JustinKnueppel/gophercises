@@ -31,6 +31,11 @@ func TestReadInput(t *testing.T) {
 			want:   []quiz.Question{},
 			err:    &quiz.MarshalQuestionError{},
 		},
+		"one_line_too_few_fields": {
+			reader: bytes.NewReader([]byte("1+1")),
+			want:   []quiz.Question{},
+			err:    &quiz.MarshalQuestionError{},
+		},
 	}
 
 	for name, tc := range tests {
