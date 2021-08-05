@@ -19,6 +19,10 @@ func TestReadInput(t *testing.T) {
 			reader: bytes.NewReader([]byte("")),
 			want:   []quiz.Question{},
 		},
+		"one_line": {
+			reader: bytes.NewReader([]byte("1+1,2")),
+			want:   []quiz.Question{{Question: "1+1", Answer: "2"}},
+		},
 	}
 
 	for name, tc := range tests {

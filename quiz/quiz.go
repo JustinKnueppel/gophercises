@@ -1,6 +1,9 @@
 package quiz
 
-import "io"
+import (
+	"encoding/csv"
+	"io"
+)
 
 type Question struct {
 	Question string
@@ -8,5 +11,15 @@ type Question struct {
 }
 
 func ReadInput(reader io.Reader) ([]Question, error) {
-	return []Question{}, nil
+	records, err := csv.NewReader(reader).Read()
+	if err != nil {
+		return []Question{}, nil
+	}
+
+	question := Question{
+		Question: records[0],
+		Answer:   records[1],
+	}
+
+	return []Question{question}, nil
 }
