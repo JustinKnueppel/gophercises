@@ -1,7 +1,6 @@
 package quiz_test
 
 import (
-	"bufio"
 	"bytes"
 	"io"
 	"strings"
@@ -86,16 +85,10 @@ func TestAskQuestion(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			var b bytes.Buffer
-			writer := bufio.NewWriter(&b)
-			quiz.AskQuestion(writer, tc.question)
+			var writer bytes.Buffer
+			quiz.AskQuestion(&writer, tc.question)
 
-			err := writer.Flush()
-			if err != nil {
-				t.Fatalf("Error flushing buffer: %v", err)
-			}
-
-			got := b.String()
+			got := writer.String()
 
 			if !strings.Contains(got, tc.question.Question) {
 				t.Fatalf("Question not asked: %v", got)
