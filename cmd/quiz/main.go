@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"bytes"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -11,8 +11,22 @@ import (
 	"github.com/JustinKnueppel/gophercises/quiz"
 )
 
+var (
+	csvFile string
+)
+
+func init() {
+	flag.StringVar(&csvFile, "csv", "problems.csv", "a csv file in the format of 'question,answer'")
+
+	flag.Parse()
+}
+
 func main() {
-	input := bytes.NewReader([]byte("1+1,2\n2+2,4"))
+	input, err := os.Open(csvFile)
+
+	if err != nil {
+		log.Fatalf("Failed to open input file %s: %v", csvFile, err)
+	}
 
 	questions, err := quiz.ReadInput(input)
 	if err != nil {
