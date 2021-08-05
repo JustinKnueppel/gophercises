@@ -79,6 +79,9 @@ func TestAskQuestion(t *testing.T) {
 		"empty_question": {
 			question: quiz.Question{Question: "", Answer: "2"},
 		},
+		"normal_question": {
+			question: quiz.Question{Question: "1+1", Answer: "2"},
+		},
 	}
 
 	for name, tc := range tests {
