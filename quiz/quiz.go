@@ -20,19 +20,25 @@ func (e *MarshalQuestionError) Error() string {
 }
 
 func ReadInput(reader io.Reader) ([]Question, error) {
-	records, err := csv.NewReader(reader).Read()
+	records, err := csv.NewReader(reader).ReadAll()
 	if err != nil {
-		return []Question{}, nil
+		return []Question{}, err
 	}
 
-	if len(records) != 2 {
-		return []Question{}, &MarshalQuestionError{Line: records}
+	questions := []Question{}
+
+	for _, line := range records {
+		if len(line) != 2 {
+			return []Question{}, &MarshalQuestionError{Line: line}
+		}
+
+		question := Question{
+			Question: line[0],
+			Answer:   line[1],
+		}
+
+		questions = append(questions, question)
 	}
 
-	question := Question{
-		Question: records[0],
-		Answer:   records[1],
-	}
-
-	return []Question{question}, nil
+	return questions, nil
 }

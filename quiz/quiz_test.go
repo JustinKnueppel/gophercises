@@ -36,6 +36,11 @@ func TestReadInput(t *testing.T) {
 			want:   []quiz.Question{},
 			err:    &quiz.MarshalQuestionError{},
 		},
+		"multiple_valid_lines": {
+			reader: bytes.NewReader([]byte("1+1,2\n2+2,4")),
+			want:   []quiz.Question{{Question: "1+1", Answer: "2"}, {Question: "2+2", Answer: "4"}},
+			err:    nil,
+		},
 	}
 
 	for name, tc := range tests {
