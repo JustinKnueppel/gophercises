@@ -58,3 +58,7 @@ func GetResponse(reader *bufio.Reader) (string, error) {
 
 	return text, nil
 }
+
+func CorrectAnswer(response string, question Question) bool {
+	return strings.Compare(response, question.Answer) == 0
+}

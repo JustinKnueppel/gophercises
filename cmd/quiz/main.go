@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/JustinKnueppel/gophercises/quiz"
 )
@@ -34,7 +33,7 @@ func main() {
 			log.Fatal("Error reading response")
 		}
 
-		if strings.Compare(response, question.Answer) == 0 {
+		if quiz.CorrectAnswer(response, question) {
 			numCorrect += 1
 		}
 	}

@@ -129,3 +129,38 @@ func TestGetResponse(t *testing.T) {
 		})
 	}
 }
+
+func TestCorrectAnswer(t *testing.T) {
+	tests := map[string]struct {
+		response string
+		question quiz.Question
+		want     bool
+	}{
+		"no_response": {
+			response: "",
+			question: quiz.Question{Question: "1+2", Answer: "2"},
+			want:     false,
+		},
+		"incorrect_response": {
+			response: "3",
+			question: quiz.Question{Question: "1+2", Answer: "2"},
+			want:     false,
+		},
+		"correct_response": {
+			response: "2",
+			question: quiz.Question{Question: "1+2", Answer: "2"},
+			want:     true,
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := quiz.CorrectAnswer(tc.response, tc.question)
+
+			diff := cmp.Diff(got, tc.want)
+			if diff != "" {
+				t.Fatalf(diff)
+			}
+		})
+	}
+}
