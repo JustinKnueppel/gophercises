@@ -1,9 +1,11 @@
 package quiz
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"io"
+	"strings"
 )
 
 type Question struct {
@@ -45,4 +47,14 @@ func ReadInput(reader io.Reader) ([]Question, error) {
 
 func AskQuestion(writer io.Writer, question Question) {
 	writer.Write([]byte(question.Question + "\n"))
+}
+
+func GetResponse(reader *bufio.Reader) (string, error) {
+	text, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err
+	}
+	text = strings.Replace(text, "\n", "", -1)
+
+	return text, nil
 }

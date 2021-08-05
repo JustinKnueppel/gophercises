@@ -1,6 +1,7 @@
 package quiz_test
 
 import (
+	"bufio"
 	"bytes"
 	"io"
 	"strings"
@@ -92,6 +93,38 @@ func TestAskQuestion(t *testing.T) {
 
 			if !strings.Contains(got, tc.question.Question) {
 				t.Fatalf("Question not asked: %v", got)
+			}
+		})
+	}
+}
+
+func TestGetResponse(t *testing.T) {
+	tests := map[string]struct {
+		reader bufio.Reader
+		want   string
+	}{
+		"empty": {
+			reader: *bufio.NewReader(bytes.NewBufferString("\n")),
+			want:   "",
+		},
+		"normal": {
+			reader: *bufio.NewReader(bytes.NewBufferString("2\n")),
+			want:   "2",
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			got, err := quiz.GetResponse(&tc.reader)
+
+			if err != nil {
+				t.Fatalf("Got unexpected error: %v", err)
+			}
+
+			diff := cmp.Diff(got, tc.want)
+
+			if diff != "" {
+				t.Fatalf(diff)
 			}
 		})
 	}

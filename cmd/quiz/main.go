@@ -28,13 +28,13 @@ func main() {
 	for _, question := range questions {
 		quiz.AskQuestion(writer, question)
 
-		text, err := reader.ReadString('\n')
-		if err != nil {
-			log.Fatalf("Failed to read text input: %v", err)
-		}
-		text = strings.Replace(text, "\n", "", -1)
+		response, err := quiz.GetResponse(reader)
 
-		if strings.Compare(text, question.Answer) == 0 {
+		if err != nil {
+			log.Fatal("Error reading response")
+		}
+
+		if strings.Compare(response, question.Answer) == 0 {
 			numCorrect += 1
 		}
 	}
