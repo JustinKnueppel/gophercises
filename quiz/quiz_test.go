@@ -1,8 +1,10 @@
 package quiz_test
 
 import (
+	"bufio"
 	"bytes"
 	"io"
+	"strings"
 	"testing"
 
 	"github.com/JustinKnueppel/gophercises/quiz"
@@ -65,6 +67,35 @@ func TestReadInput(t *testing.T) {
 			diff := cmp.Diff(got, tc.want)
 			if diff != "" {
 				t.Fatalf(diff)
+			}
+		})
+	}
+}
+
+func TestAskQuestion(t *testing.T) {
+	tests := map[string]struct {
+		question quiz.Question
+	}{
+		"empty_question": {
+			question: quiz.Question{Question: "", Answer: "2"},
+		},
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			var b bytes.Buffer
+			writer := bufio.NewWriter(&b)
+			quiz.AskQuestion(writer, tc.question)
+
+			err := writer.Flush()
+			if err != nil {
+				t.Fatalf("Error flushing buffer: %v", err)
+			}
+
+			got := b.String()
+
+			if !strings.Contains(got, tc.question.Question) {
+				t.Fatalf("Question not asked: %v", got)
 			}
 		})
 	}

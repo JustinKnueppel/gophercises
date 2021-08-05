@@ -1,6 +1,7 @@
 package quiz
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"io"
@@ -41,4 +42,8 @@ func ReadInput(reader io.Reader) ([]Question, error) {
 	}
 
 	return questions, nil
+}
+
+func AskQuestion(writer *bufio.Writer, question Question) {
+	writer.WriteString(question.Question + "\n")
 }
